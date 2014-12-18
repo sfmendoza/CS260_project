@@ -1,0 +1,43 @@
+{%extends "base.html" %}
+
+{%block title %}{{fname}}{% endblock %}
+
+{%block content %}
+<div class="mid">
+    <div>
+        Hi <b>{{fname}}!</b>&nbsp;|&nbsp;<a href="/logout">Logout</a>
+    </div>
+    <h1>My Todo List</h1>
+{#    <a href="add-todo">Add Todo</a>#}
+    <form action="add-todo" method="post">
+        <label>Task</label>
+        <textarea name="job" required cols="40" rows="2" placeholder="Enter a task"></textarea>
+        <input type="submit" value="Add">
+        {%csrf_token%}
+    </form>
+
+    <table width="100%" cellpadding="5">
+        <tr>
+            <td width="20%">Due Date</td>
+            <td width="40%">Tasks</td>
+            <td width="20%">Status</td>
+            <td width="20%">Action</td>
+        </tr>
+        {%for row in todo%}
+        <tr>
+            <td>{{row.created_date|date:"D d M Y"}}</td>
+            <td>{{row.todo_job}}</td>
+            <td>{{row.status}}</td>
+            <td>
+                {% if row.status == 'Active' %}
+                <a href="/edit-todo/{{row.id}}">Edit</a>&nbsp;|&nbsp;
+                <a href="/complete-todo/{{row.id}}">Complete</a> &nbsp;|&nbsp;
+                <a href="/cancel-todo/{{row.id}}">Cancel</a>
+{#                <a href="/delete-todo/{{row.id}}">Delete</a>#}
+                {% endif %}
+            </td>
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+{% endblock %}
