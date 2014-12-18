@@ -19,15 +19,13 @@
     <table width="100%" cellpadding="5">
         <tr>
             <td width="20%">Due Date</td>
-            <td width="40%">Tasks</td>
-            <td width="20%">Status</td>
-            <td width="20%">Action</td>
+            <td width="50%">Ongoing Tasks</td>
+            <td width="30%">Action</td>
         </tr>
         {%for row in todo%}
         <tr>
             <td>{{row.created_date|date:"D d M Y"}}</td>
             <td>{{row.todo_job}}</td>
-            <td>{{row.status}}</td>
             <td>
                 {% if row.status == 'Active' %}
                 <a href="/edit-todo/{{row.id}}">Edit</a>&nbsp;|&nbsp;
@@ -36,6 +34,30 @@
 {#                <a href="/delete-todo/{{row.id}}">Delete</a>#}
                 {% endif %}
             </td>
+        </tr>
+        {%endfor%}
+    </table>
+    <br>
+    <br>
+    <br>
+    <table width="100%" cellpadding="5">
+        <tr>
+            <td width="20%">Due Date</td>
+            <td width="60%">Completed and Cancelled Tasks</td>
+            <td width="20%">Status</td>
+        </tr>
+        {%for row in done_tasks%}
+        <tr>
+            <td>{{row.created_date|date:"D d M Y"}}</td>
+            <td>{{row.todo_job}}</td>
+            <td>{{row.status}}</td>
+        </tr>
+        {%endfor%}
+        {%for row in cancel_todo_obj%}
+        <tr>
+            <td>{{row.created_date|date:"D d M Y"}}</td>
+            <td>{{row.todo_job}}</td>
+            <td>{{row.status}}</td>
         </tr>
         {%endfor%}
     </table>

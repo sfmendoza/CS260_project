@@ -6,10 +6,14 @@ from datetime import datetime
 
 class User(models.Model):
 
-    fname = models.CharField(max_length=255)
-    lname = models.CharField(max_length=255)
-    email = models.EmailField(max_length=255, unique=True)
-    password = models.CharField(max_length=200)
+    username = models.CharField(max_length=20, unique=True, blank=False, null=False)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, blank=False, null=False)
+    password = models.CharField(max_length=200, blank=False, null=False)
+
+    def __str__(self):
+        return self.email
 
 
 class Todo(models.Model):
@@ -21,4 +25,4 @@ class Todo(models.Model):
 
     class Meta:
         ordering = ('id',)
-        unique_together = ('user', 'todo_job')
+

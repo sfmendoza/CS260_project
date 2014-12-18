@@ -13,7 +13,7 @@ def add_todo(request):
         todo_obj.save()
         return HttpResponseRedirect('/')
     else:
-        data = RequestContext(request, {'fname': request.session['fname']})
+        data = RequestContext(request, {'username': request.session['username']})
         return render_to_response('add_todo.html', data)
 
 def edit_todo(request, todo_id):
@@ -22,7 +22,7 @@ def edit_todo(request, todo_id):
         return HttpResponseRedirect('/')
     else:
         todo_obj = Todo.objects.filter(id=todo_id)
-        data = RequestContext(request, {'fname': request.session['fname'], 'todo': todo_obj[0]})
+        data = RequestContext(request, {'username': request.session['username'], 'todo': todo_obj[0]})
         return render_to_response('edit_todo.html', data)
 
 def delete_todo(request, todo_id):

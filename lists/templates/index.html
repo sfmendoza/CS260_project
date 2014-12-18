@@ -3,24 +3,16 @@
 {%block title %}Welcome {% endblock %}
 
 {%block content %}
-    <div class="mid">
-        <div class="left small-div">
-            <h1>Register</h1>
-            <form action="signup" method="post" enctype="multipart/form-data" id="frmId">
-                {{form.as_p}}
-                <input type="submit" value="Register" class="btn">
-                {%csrf_token%}
-            </form>
-        </div>
-        <div class="right small-div">
-            <h1>Login</h1>
-            <form action="login" method="post">
-                Email: <input type="text" name="email" required>
-                Password: <input type="password" name="password" required>
-                <input type="submit" value="Login">
-                {%csrf_token%}
-            </form>
-        </div>
-        <div style="clear:both;"></div>
+    <div id="nav">
+        <a href="/">home</a> |
+        {% if username %}
+        welcome {{ username }}
+        (<a href="/logout">logout</a>)
+        {% else %}
+        <a href="/login/">login</a> |
+        <a href="/register/">register</a> |
+        <a href="/admin">admin</a>
+        {% endif %}
     </div>
+    <h1>Welcome to the ToDo lists app </h1>
 {% endblock %}

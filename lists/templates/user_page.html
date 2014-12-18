@@ -1,0 +1,25 @@
+{%extends "base.html" %}
+
+{%block title %}Update User{% endblock %}
+
+{%block content %}
+
+    <div id="nav">
+        <a href="/">home</a> |
+        {% if username %}
+        welcome {{ username }}
+        (<a href="/logout">logout</a>)
+        {% else %}
+        <a href="/login/">login</a> |
+        <a href="/register/">register</a>
+        {% endif %}
+    </div>
+
+    <h1>Update User Details</h1>
+    <form action="update" method="post" enctype="multipart/form-data" id="frmId">
+        {{form.as_p}}
+        <input type="submit" value="Update" class="btn">
+        {%csrf_token%}
+    </form>
+
+{% endblock %}

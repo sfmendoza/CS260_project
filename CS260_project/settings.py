@@ -88,4 +88,4 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-SITE_ID = 2
+SITE_ID = 1

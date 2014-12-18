@@ -1,0 +1,28 @@
+{%extends "base.html" %}
+
+{%block title %}Register{% endblock %}
+
+{%block content %}
+
+    <div id="nav">
+        <a href="/">home</a> |
+        {% if username %}
+        welcome {{ username }}
+        (<a href="/logout">logout</a>)
+        {% else %}
+        <a href="/login/">login</a> |
+        <a href="/register/">register</a>
+        {% endif %}
+    </div>
+
+    <h1>Register</h1>
+    {% if form.has_errors %}
+    {{ form.text.errors }}
+    {% endif %}
+    <form action="signup" method="post" enctype="multipart/form-data" id="frmId">
+        {{form.as_p}}
+        <input type="submit" value="Register" class="btn">
+        {%csrf_token%}
+    </form>
+
+{% endblock %}

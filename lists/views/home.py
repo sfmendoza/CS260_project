@@ -14,52 +14,63 @@ from django.shortcuts import render_to_response
 def main_page(request):
     if 'user_id' in request.session:
         user_obj = User.objects.filter(id=request.session['user_id'])
-        todo_obj = Todo.objects.filter(user_id=request.session['user_id'])
-        data = RequestContext(request, {'fname': request.session['fname'], 'user': user_obj, 'todo': todo_obj, 'a': 0})
+        todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Active')
+        complete_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Completed')
+        cancel_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Cancelled')
+        data = RequestContext(request, {'fname': request.session['fname'],
+                                        'username': request.session['username'],
+                                        'user': user_obj,
+                                        'todo': todo_obj,
+                                        'done_tasks': complete_todo_obj,
+                                        'cancel_tasks': cancel_todo_obj,
+                                        'a': 0}
+                              )
         return render_to_response('home.html', data)
     else:
-        form = RegistrationForm()
+        form = SignupForm()
         variables = RequestContext(request, {'form': form})
         return render_to_response('index.html', variables)
 
 
-def register_page(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = User.objects.create_user(fname=form.cleaned_data['fname'],
-                                            lname=form.cleaned_data['lname'],
-                                            password=form.cleaned_data['password1'],
-                                            email=form.cleaned_data['email'])
-            return HttpResponseRedirect('/')
-    form = RegistrationForm()
-    variables = RequestContext(request, {'form': form})
-    return render_to_response('registration/register.html', variables)
-
-
 def signup(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             obj = form.save()
             id = obj.id
             request.session['user_id'] = id
-            request.session['fname'] = form.cleaned_data['fname_']
+            request.session['fname'] = form.cleaned_data['first_name']
+            request.session['username'] = form.cleaned_data['username']
     return HttpResponseRedirect('/')
 
 
-def login(request):
-    user_obj = User.objects.filter(email=request.POST.get('email'), password=request.POST.get('password'))
+def login_user(request):
+    user_obj = User.objects.filter(username=request.POST.get('username'), password=request.POST.get('password'))
     if user_obj.count():
-        print
-        user_obj
         request.session['user_id'] = user_obj[0].id
-        request.session['fname'] = user_obj[0].fname
-    return HttpResponseRedirect('/')
+        request.session['fname'] = user_obj[0].first_name
+        request.session['username'] = user_obj[0].username
+        return HttpResponseRedirect('/')
+    else:
+        data = {}
+        return render_to_response('login.html', data)
 
 
 def logout(request):
     del request.session['user_id']
     del request.session['fname']
+    del request.session['username']
     request.session.modified = True
     return HttpResponseRedirect('/')
+
+
+def login(request):
+    return render(request, 'login.html')
+
+
+def register(request):
+    return render(request, 'register.html', {'form': SignupForm()})
+
+
+def update(request):
+    return render(request, 'user_page.html', {'form': SignupForm()})
