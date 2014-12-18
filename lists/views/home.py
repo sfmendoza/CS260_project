@@ -1,11 +1,9 @@
 __author__ = 'sieg'
 
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import Context
-from django.template.loader import get_template
 from django.http import HttpResponseRedirect
-from django.contrib.auth import logout
+#from django.http import HttpResponse
+#from django.contrib.auth import logout
 from lists.forms import *
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -14,18 +12,24 @@ from django.shortcuts import render_to_response
 def main_page(request):
     if 'user_id' in request.session:
         user_obj = User.objects.filter(id=request.session['user_id'])
-        todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Active')
-        complete_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Completed')
-        cancel_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Cancelled')
-        data = RequestContext(request, {'fname': request.session['fname'],
-                                        'username': request.session['username'],
-                                        'user': user_obj,
-                                        'todo': todo_obj,
-                                        'done_tasks': complete_todo_obj,
-                                        'cancel_tasks': cancel_todo_obj,
-                                        'a': 0}
-                              )
-        return render_to_response('home.html', data)
+
+        if user_obj:
+            todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Active')
+            complete_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Completed')
+            cancel_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Cancelled')
+            data = RequestContext(request, {'fname': request.session['fname'],
+                                            'username': request.session['username'],
+                                            'user': user_obj,
+                                            'todo': todo_obj,
+                                            'done_tasks': complete_todo_obj,
+                                            'cancel_tasks': cancel_todo_obj,
+                                            'a': 0}
+                                  )
+            return render_to_response('home.html', data)
+        else:
+            form = SignupForm()
+            variables = RequestContext(request, {'form': form})
+            return render_to_response('index.html', variables)
     else:
         form = SignupForm()
         variables = RequestContext(request, {'form': form})
@@ -70,7 +74,6 @@ def login(request):
 
 def register(request):
     return render(request, 'register.html', {'form': SignupForm()})
-
 
 def update(request):
     return render(request, 'user_page.html', {'form': SignupForm()})
