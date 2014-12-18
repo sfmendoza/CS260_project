@@ -1,9 +1,7 @@
 __author__ = 'sieg'
 
 from django import forms
-from django.forms import ModelForm, PasswordInput
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.exceptions import ValidationError
 from lists.models import *
 
 DUPLICATE_ITEM_ERROR = "Email is already in use."
@@ -20,7 +18,7 @@ class RegistrationForm(forms.Form):
     password2_ = forms.CharField(label='Confirm Password',
                                  widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}))
 
-    def clean_password2(self):
+    def validate_password2(self):
         if 'password1' in self.cleaned_data:
             password1 = self.cleaned_data['password1']
             password2 = self.cleaned_data['password2']
@@ -28,7 +26,7 @@ class RegistrationForm(forms.Form):
                 return password2
         raise forms.ValidationError('Passwords do not match.')
 
-    def clean_email(self):
+    def validate_emailadd(self):
         email_ = self.cleaned_data['email']
 
         from django.core.validators import validate_email
@@ -44,9 +42,10 @@ class RegistrationForm(forms.Form):
     def save(self):
         data = self.cleaned_data
 
-        user_ = User.objects.create(fname=data['fname'],
-                                    lname=data['lname'],
-                                    password=data['password1'],
-                                    email=data['email'],
+        user_ = User.objects.create(fname=data['fname_'],
+                                    lname=data['lname_'],
+                                    password=data['password1_'],
+                                    email=data['email_'],
                                     )
         #user.save()
+        return user_

@@ -1,5 +1,5 @@
 """
-Django settings for superlists project.
+Django settings for CS260_project project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -50,9 +50,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'superlists.urls'
+ROOT_URLCONF = 'CS260_project.urls'
 
-WSGI_APPLICATION = 'superlists.wsgi.application'
+WSGI_APPLICATION = 'CS260_project.wsgi.application'
 
 
 # Database

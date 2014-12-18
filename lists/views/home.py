@@ -44,7 +44,7 @@ def signup(request):
             obj = form.save()
             id = obj.id
             request.session['user_id'] = id
-            request.session['fname'] = form.cleaned_data['fname']
+            request.session['fname'] = form.cleaned_data['fname_']
     return HttpResponseRedirect('/')
 
 
