@@ -40,7 +40,7 @@ def cancel_todo(request, todo_id):
 def complete_todo(request, todo_id):
 
         todo_obj = Todo.objects.get(id=todo_id)
-        todo_obj.status = 'Completed'
+        todo_obj.status = 'Done'
         todo_obj.save()
 
         return HttpResponseRedirect('/')

@@ -15,7 +15,7 @@ def main_page(request):
 
         if user_obj:
             todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Active')
-            complete_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Completed')
+            complete_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Done')
             cancel_todo_obj = Todo.objects.filter(user_id=request.session['user_id'], status='Cancelled')
             data = RequestContext(request, {'fname': request.session['fname'],
                                             'username': request.session['username'],
